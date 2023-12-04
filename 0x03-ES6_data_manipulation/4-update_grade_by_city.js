@@ -3,7 +3,12 @@ export default function updateStudentGradeByCity(
   city,
   newGrades,
 ) {
+  if (!Array.isArray(getListStudents) || !Array.isArray(newGrades)) return [];
   return getListStudents
     .filter((student) => student.location === city)
-    .map((student) => ({ ...student, grade: newGrades[student.id] || 'N/A' }));
+    .map((student) => ({
+      ...student,
+      grade:
+        newGrades.find((grade) => grade.studentId === student.id).grade || 'N/A',
+    }));
 }
