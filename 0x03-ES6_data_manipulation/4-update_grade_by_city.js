@@ -6,9 +6,20 @@ export default function updateStudentGradeByCity(
   if (!Array.isArray(getListStudents) || !Array.isArray(newGrades)) return [];
   return getListStudents
     .filter((student) => student.location === city)
-    .map((student) => ({
-      ...student,
-      grade:
-        newGrades.find((grade) => grade.studentId === student.id).grade || 'N/A',
-    }));
+    .map((student) => {
+      const matchingGrade = newGrades.find(
+        (grade) => grade.studentId === student.id,
+      );
+      if (matchingGrade) {
+        return {
+          ...student,
+          grade:
+            matchingGrade.grade !== undefined ? matchingGrade.grade : 'N/A',
+        };
+      }
+      return {
+        ...student,
+        grade: 'N/A',
+      };
+    });
 }
